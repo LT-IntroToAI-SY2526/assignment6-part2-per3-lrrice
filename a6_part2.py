@@ -247,16 +247,16 @@ if __name__ == "__main__":
     
     # Step 1: Load and explore
     # TODO: Call load_and_explore_data() with 'house_prices.csv'
-    
+    data = load_and_explore_data('house_prices.csv')
     # Step 2: Visualize features
     # TODO: Call visualize_features() with the data
     
     # Step 3: Prepare features
     # TODO: Call prepare_features() and store X and y
-    
+    X, y = prepare_features(data)
     # Step 4: Split data
     # TODO: Call split_data() and store X_train, X_test, y_train, y_test
-    
+    X_train, X_test, y_train, y_test = split_data(X, y)
     # Step 5: Train model
     # TODO: Call train_model() with training data and feature names (X.columns)
     
