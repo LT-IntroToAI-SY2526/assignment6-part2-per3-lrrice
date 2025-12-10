@@ -25,7 +25,7 @@ def load_and_explore_data(filename):
     """
     data = pd.read_csv(filename)
     
-    print("=== Car Price Data ===")
+    print("=== House Price Data ===")
     print(f"\nFirst 5 rows:")
     print(data.head())
     
@@ -46,36 +46,42 @@ def visualize_features(data):
     Args:
         data: pandas DataFrame with features and Price
     """
-    # TODO: Create a figure with 2x2 subplots, size (12, 10)
-    
-    # TODO: Add a main title: 'House Features vs Price'
-    
-    # TODO: Plot 1 (top left): SquareFeet vs Price
-    #       - scatter plot, color='blue', alpha=0.6
-    #       - labels and title
-    #       - grid
-    
-    # TODO: Plot 2 (top right): Bedrooms vs Price
-    #       - scatter plot, color='green', alpha=0.6
-    #       - labels and title
-    #       - grid
-    
-    # TODO: Plot 3 (bottom left): Bathrooms vs Price
-    #       - scatter plot, color='red', alpha=0.6
-    #       - labels and title
-    #       - grid
-    
-    # TODO: Plot 4 (bottom right): Age vs Price
-    #       - scatter plot, color='orange', alpha=0.6
-    #       - labels and title
-    #       - grid
-    
-    # TODO: Use plt.tight_layout() to make plots fit nicely
-    
-    # TODO: Save the figure as 'feature_plots.png' with dpi=300
-    
     # TODO: Show the plot
-    pass
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+    fig.suptitle('House features vs Price', fontsize=16, fontweight='bold')
+    
+    # Plot 1: Mileage vs Price
+    axes[0, 0].scatter(data['Square feet'], data['Price'], color='blue', alpha=0.6)
+    axes[0, 0].set_xlabel('Square feet (1000s of feet)')
+    axes[0, 0].set_ylabel('Price ($)')
+    axes[0, 0].set_title('Square feet vs Price')
+    axes[0, 0].grid(True, alpha=0.3)
+    
+    # Plot 2: Age vs Price
+    axes[0, 1].scatter(data['Bedrooms'], data['Price'], color='green', alpha=0.6)
+    axes[0, 1].set_xlabel('Bedrooms')
+    axes[0, 1].set_ylabel('Price ($)')
+    axes[0, 1].set_title('Bedrooms vs Price')
+    axes[0, 1].grid(True, alpha=0.3)
+    
+    # Plot 3: Brand vs Price
+    axes[1, 0].scatter(data['Bathrooms'], data['Price'], color='red', alpha=0.6)
+    axes[1, 0].set_xlabel('Bathrooms')
+    axes[1, 0].set_ylabel('Price ($)')
+    axes[1, 0].set_title('Bathrooms vs Price')
+    axes[1, 0].grid(True, alpha=0.3)
+    
+    # Plot 2: Age vs Price
+    axes[0, 1].scatter(data['Age'], data['Price'], color='green', alpha=0.6)
+    axes[0, 1].set_xlabel('Age (years)')
+    axes[0, 1].set_ylabel('Price ($)')
+    axes[0, 1].set_title('Age vs Price')
+    axes[0, 1].grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig('house_features.png', dpi=300, bbox_inches='tight')
+    print("\n✓ Feature plots saved as 'house_features.png'")
+    plt.show()
 
 
 def prepare_features(data):
@@ -227,14 +233,14 @@ def make_prediction(model, sqft, bedrooms, bathrooms, age):
     Returns:
         predicted price
     """
-    car_features = pd.DataFrame([[bedrooms, age, bathrooms, sqft]], 
+    house_features = pd.DataFrame([[bedrooms, age, bathrooms, sqft]], 
                                  columns=['SquareFeet', 'Bedrooms', 'Bathrooms', 'Age'])
-    predicted_price = model.predict(car_features)[0]
+    predicted_price = model.predict(house_features)[0]
     
     brand_name = ['Toyota', 'Honda', 'Ford'][bedrooms]
     
     print(f"\n=== New Prediction ===")
-    print(f"Car specs: {bathrooms:.0f}k miles, {age} years old, {brand_name}")
+    print(f"house specs: {sqft:.0f}k feet, {bedrooms} bedrooms, {bathrooms} bathrooms, {age} years old")
     print(f"Predicted price: ${predicted_price:,.2f}")
     
     return predicted_price
