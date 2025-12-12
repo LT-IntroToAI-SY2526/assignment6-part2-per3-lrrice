@@ -51,7 +51,7 @@ def visualize_features(data):
     fig.suptitle('House features vs Price', fontsize=16, fontweight='bold')
     
     # Plot 1: Mileage vs Price
-    axes[0, 0].scatter(data['Square feet'], data['Price'], color='blue', alpha=0.6)
+    axes[0, 0].scatter(data['SquareFeet'], data['Price'], color='blue', alpha=0.6)
     axes[0, 0].set_xlabel('Square feet (1000s of feet)')
     axes[0, 0].set_ylabel('Price ($)')
     axes[0, 0].set_title('Square feet vs Price')
@@ -72,11 +72,11 @@ def visualize_features(data):
     axes[1, 0].grid(True, alpha=0.3)
     
     # Plot 2: Age vs Price
-    axes[0, 1].scatter(data['Age'], data['Price'], color='green', alpha=0.6)
-    axes[0, 1].set_xlabel('Age (years)')
-    axes[0, 1].set_ylabel('Price ($)')
-    axes[0, 1].set_title('Age vs Price')
-    axes[0, 1].grid(True, alpha=0.3)
+    axes[1, 1].scatter(data['Age'], data['Price'], color='green', alpha=0.6)
+    axes[1, 1].set_xlabel('Age (years)')
+    axes[1, 1].set_ylabel('Price ($)')
+    axes[1, 1].set_title('Age vs Price')
+    axes[1, 1].grid(True, alpha=0.3)
     
     plt.tight_layout()
     plt.savefig('house_features.png', dpi=300, bbox_inches='tight')
@@ -95,7 +95,7 @@ def prepare_features(data):
         X - DataFrame with feature columns
         y - Series with target column
     """
-    feature_columns = ['SquareFeet', 'Bedrooms', 'Bathrooms', 'age']
+    feature_columns = ['SquareFeet', 'Bedrooms', 'Bathrooms', 'Age']
     X = data[feature_columns]
     y = data['Price']
     
@@ -194,6 +194,7 @@ def evaluate_model(model, X_test, y_test, feature_names):
     for i, (name, importance) in enumerate(feature_importance, 1):
         print(f"{i}. {name}: {importance:.2f}")
     
+    print(r2)
     return predictions
 
 
@@ -254,28 +255,28 @@ if __name__ == "__main__":
     # Step 1: Load and explore
     # TODO: Call load_and_explore_data() with 'house_prices.csv'
     data = load_and_explore_data('house_prices.csv')
+
     # Step 2: Visualize features
     # TODO: Call visualize_features() with the data
-    
+    visualize_features(data)
     # Step 3: Prepare features
-    # TODO: Call prepare_features() and store X and y
     X, y = prepare_features(data)
-    # Step 4: Split data
-    # TODO: Call split_data() and store X_train, X_test, y_train, y_test
+    
+    # Step 4: Split data (no scaling for this example!)
     X_train, X_test, y_train, y_test = split_data(X, y)
+    
     # Step 5: Train model
-    # TODO: Call train_model() with training data and feature names (X.columns)
+    model = train_model(X_train, y_train, X.columns)
     
     # Step 6: Evaluate model
-    # TODO: Call evaluate_model() with model, test data, and feature names
+    predictions = evaluate_model(model, X_test, y_test, X.columns)
     
     # Step 7: Compare predictions
-    # TODO: Call compare_predictions() showing first 10 examples
-    
+    compare_predictions(y_test, predictions)
+
     # Step 8: Make a new prediction
-    # TODO: Call make_prediction() for a house of your choice
+    make_prediction(model, 45, 3, 0, 0)
     
     print("\n" + "=" * 70)
-    print("✓ Assignment complete! Check your saved plots.")
-    print("Don't forget to complete a6_part2_writeup.md!")
+    print("✓ Example complete! Check out the saved plots.")
     print("=" * 70)
